@@ -1,0 +1,24 @@
+# pr-review - review a diff for correctness, security, and test gaps.
+#
+# Runs on the working-tree diff by default. Pass a truthy 'refute' input to add
+# a second pass that challenges each finding before it is reported, which trims
+# false positives at the cost of one extra model call per finding.
+#
+# See skills/rca/skill.yaml for the full schema reference.
+name: pr-review
+description: Review the diff for correctness, security, and test gaps, with an optional refute pass
+# 'refute' is optional; leave it empty to skip the refute pass.
+inputs: [refute]
+context:
+  - diff
+steps:
+  - id: review
+    prompt: prompts/review.md
+    produces: findings
+  - id: refute
+    when: refute
+    foreach: findings
+    as: finding
+    prompt: prompts/refute.md
+    produces: checked_findings
+output: markdown

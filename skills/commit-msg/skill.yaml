@@ -1,0 +1,14 @@
+# commit-msg - draft a Conventional Commits message from the staged diff.
+#
+# Stage your changes first (git add), then run. Reads staged changes only.
+# See skills/rca/skill.yaml for the full schema reference.
+name: commit-msg
+description: Draft a Conventional Commits message from the staged diff
+inputs: []
+context:
+  - diff: staged
+steps:
+  - id: draft
+    prompt: prompts/draft.md
+    produces: message
+output: text

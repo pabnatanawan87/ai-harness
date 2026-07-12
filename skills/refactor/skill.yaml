@@ -1,0 +1,13 @@
+# refactor - propose a safe refactor with rationale and no behavior change.
+#
+# See skills/rca/skill.yaml for the full schema reference.
+name: refactor
+description: Propose a safe refactor with rationale and no behavior change
+inputs: [file]
+context:
+  - files: "{{file}}"
+steps:
+  - id: propose
+    prompt: prompts/propose.md
+    produces: proposal
+output: markdown

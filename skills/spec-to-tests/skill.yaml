@@ -1,0 +1,15 @@
+# spec-to-tests - turn a file or written spec into test cases and skeletons.
+#
+# Point it at a source file with --file, or pipe a spec on stdin, or both.
+# See skills/rca/skill.yaml for the full schema reference.
+name: spec-to-tests
+description: Propose test cases and test skeletons for a file or written spec
+inputs: [file]
+context:
+  - files: "{{file}}"
+  - stdin
+steps:
+  - id: propose
+    prompt: prompts/propose.md
+    produces: test_plan
+output: markdown

@@ -1,0 +1,39 @@
+# rca - decompose a symptom into verified root-cause hypotheses.
+#
+# Schema (shared by every skill in this repo):
+#   name         string   skill id, matches the folder name
+#   description  string   one line shown by 'ai skills list'
+#   inputs       list     named CLI inputs, referenced in templates as {{name}}
+#   context      list     built-in gatherers run before the steps (optional)
+#                           - repo_map            -> {{repo_map}}
+#                           - diff                -> {{diff}}   (working tree)
+#                           - diff: staged        -> {{diff}}   (staged only)
+#                           - files: "{{file}}"   -> {{files}}
+#                           - ripgrep: "pattern"  -> {{ripgrep}}
+#                           - stdin               -> {{stdin}}
+#   steps        list     ordered model calls
+#                           prompt:   path to a template, relative to this file
+#                           produces: names the output, usable in later templates
+#                           foreach:  iterate a prior produced list
+#                           as:       binds the current item (default: item)
+#                           when:     run only if the named input/value is truthy
+#   output       string   markdown | json | text
+#
+# Templates use double-brace placeholders ({{name}}) so a literal single-brace
+# JSON example in a prompt body is never mistaken for a placeholder.
+name: rca
+description: Decompose a symptom into verified root-cause hypotheses
+inputs: [symptom]
+context:
+  - repo_map
+  - ripgrep: "{{symptom}}"
+steps:
+  - id: decompose
+    prompt: prompts/decompose.md
+    produces: hypotheses
+  - id: verify
+    foreach: hypotheses
+    as: hypothesis
+    prompt: prompts/verify.md
+    produces: verdicts
+output: markdown

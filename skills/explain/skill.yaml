@@ -1,0 +1,13 @@
+# explain - explain a file or function for onboarding.
+#
+# See skills/rca/skill.yaml for the full schema reference.
+name: explain
+description: Explain a file or function for onboarding
+inputs: [file]
+context:
+  - files: "{{file}}"
+steps:
+  - id: explain
+    prompt: prompts/explain.md
+    produces: explanation
+output: markdown

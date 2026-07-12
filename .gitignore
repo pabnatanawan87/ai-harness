@@ -1,0 +1,34 @@
+# Secrets - never commit real keys
+.env
+.env.*
+!.env.example
+
+# dotnet build output
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+artifacts/
+*.user
+*.suo
+
+# dotnet tool / package output
+*.nupkg
+nupkg/
+
+# Test results
+[Tt]est[Rr]esults/
+*.trx
+coverage*.json
+coverage*.xml
+
+# IDE / editor
+.vs/
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS cruft
+.DS_Store
+Thumbs.db

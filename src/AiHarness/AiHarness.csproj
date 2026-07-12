@@ -31,4 +31,20 @@
     <PackageReference Include="Spectre.Console" Version="0.57.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!--
+      Ship the built-in skills (skill.yaml + prompt .md files) with the tool. They live at
+      the repo root under skills/. CopyToOutputDirectory puts them next to the assembly for
+      local runs; because this project is packed as a dotnet tool, that same build output is
+      then packed into the tool package (under tools/<tfm>/any/skills), so an installed "ai"
+      finds them via AppContext.BaseDirectory/skills (see SkillLoader.CreateDefault). The Link
+      and %(RecursiveDir) metadata preserve the per-skill subfolder layout in both places.
+      Pack is left false so the tool packer does not also add a second, duplicated copy.
+    -->
+    <Content Include="..\..\skills\**\*"
+             Link="skills\%(RecursiveDir)%(Filename)%(Extension)"
+             CopyToOutputDirectory="PreserveNewest"
+             Pack="false" />
+  </ItemGroup>
+
 </Project>
